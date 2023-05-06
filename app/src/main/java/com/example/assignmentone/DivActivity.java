@@ -75,7 +75,7 @@ public class DivActivity extends AppCompatActivity {
                 int tmpChoice=Integer.parseInt(String.valueOf(tmpRadio.getText()));
 
                 if(temp.get(count).getCorrectChoice()==tmpChoice){
-                    if(count<daOperation.operations.size()-1){
+                    if(count<temp.size()-1){
                         rg.clearCheck();
                         count++;
                         equation.setText(temp.get(count).getEquation());
