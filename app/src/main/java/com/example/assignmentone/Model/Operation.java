@@ -6,10 +6,13 @@ public class Operation {
     private String equation;
     public int []choice ;
 
-    public Operation(char operation, String equation, int[] choice) {
+    public int correctChoice;
+
+    public Operation(char operation, String equation, int[] choice,int correctChoice) {
         this.operation = operation;
         this.equation = equation;
         this.choice = choice;
+        this.correctChoice=correctChoice;
     }
 
     public char getOperation() {
@@ -34,5 +37,13 @@ public class Operation {
 
     public void setChoice(int[] choice) {
         this.choice = choice;
+    }
+
+    public int getCorrectChoice() {
+        return correctChoice;
+    }
+
+    public void setCorrectChoice(int correctChoice) {
+        this.correctChoice = correctChoice;
     }
 }
