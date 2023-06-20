@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Math Game</string>
+    <string name="welcome">Welcome Math\nGame</string>
 </resources>
