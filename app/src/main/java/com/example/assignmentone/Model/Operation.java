@@ -1,5 +1,7 @@
 package com.example.assignmentone.Model;
 
+import java.util.ArrayList;
+
 public class Operation {
 
     private char operation;
@@ -16,6 +18,7 @@ public class Operation {
     }
 
     public char getOperation() {
+
         return operation;
     }
 

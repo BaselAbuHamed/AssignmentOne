@@ -1,7 +1,11 @@
 package com.example.assignmentone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,14 +26,17 @@ public class AddActivity extends AppCompatActivity {
     RadioButton b ;
     RadioButton c ;
     RadioButton d ;
-
     RadioGroup rg;
     Button n;
+    Button check;
     int count=0;
+    int countMark=10;
 
     ImageView image;
     ArrayList <Operation> temp=new ArrayList<>();
     TextView equation;
+    TextView mark;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,20 +48,24 @@ public class AddActivity extends AppCompatActivity {
         d=findViewById(R.id.D);
         rg=findViewById(R.id.radioGroub);
         n=findViewById(R.id.next);
+        check=findViewById(R.id.check);
         image=findViewById(R.id.imageView);
+        mark=findViewById(R.id.mark);
 
         image.setVisibility(View.GONE);
         equation=findViewById(R.id.equation);
 
-        DAOperation daOperation = new DAOperation();
 
-        for (int i = 0; i <daOperation.operations.size() ; i++) {
 
-            if(daOperation.operations.get(i).getOperation()=='+'){
-                System.out.println(daOperation.operations.get(i).getOperation());
-                temp.add(daOperation.operations.get(i));
+        DAOperation daOperation = new DAOperation(getApplicationContext());
+        ArrayList<Operation> operations = daOperation.getOperations();
+
+        for (int i = 0; i <operations.size() ; i++) {
+
+            if(operations.get(i).getOperation()=='+'){
+                System.out.println(operations.get(i).getOperation());
+                temp.add(operations.get(i));
             }
-
         }
 
         equation.setText(temp.get(0).getEquation());
@@ -73,6 +84,7 @@ public class AddActivity extends AppCompatActivity {
                 Toast.makeText(this, "pleas select your answer", Toast.LENGTH_SHORT).show();
             }
             else{
+
                 RadioButton tmpRadio=findViewById(tmpRG);
                 int tmpChoice=Integer.parseInt(String.valueOf(tmpRadio.getText()));
 
@@ -93,15 +105,53 @@ public class AddActivity extends AppCompatActivity {
                         rg.setVisibility(View.GONE);
                         n.setVisibility(View.GONE);
                         equation.setVisibility(View.GONE);
+                        mark.setText(countMark+"/10");
                         image.setVisibility(View.VISIBLE);
+                        mark.setVisibility(View.VISIBLE);
+                        check.setVisibility(View.VISIBLE);
+
+                        check.setOnClickListener(view -> openReviewActivity());
+
                     }
                 }
 
                 else {
                     Toast.makeText(this, "Incorrect answer", Toast.LENGTH_SHORT).show();
+                    countMark--;
 
+                    if(count<temp.size()-1){
+                        rg.clearCheck();
+                        count++;
+                        equation.setText(temp.get(count).getEquation());
+
+                        a.setText(temp.get(count).getChoice()[0]+"");
+                        b.setText(temp.get(count).getChoice()[1]+"");
+                        c.setText(temp.get(count).getChoice()[2]+"");
+                        d.setText(temp.get(count).getChoice()[3]+"");
+                    }
+                    else{
+                        rg.setVisibility(View.GONE);
+                        n.setVisibility(View.GONE);
+                        equation.setVisibility(View.GONE);
+                        mark.setText(countMark+"/10");
+                        image.setVisibility(View.VISIBLE);
+                        mark.setVisibility(View.VISIBLE);
+                        check.setVisibility(View.VISIBLE);
+                        check.setOnClickListener(view -> openReviewActivity());
+
+                    }
+
+                    if (countMark<5){
+                        Toast.makeText(this, "you lose game", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+    }
+
+    public void openReviewActivity(){
+        Intent intent = new Intent(this,Review.class);
+        intent.putExtra("Equation",'+');
+        startActivity(intent);
     }
 }

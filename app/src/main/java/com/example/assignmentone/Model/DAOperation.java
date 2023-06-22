@@ -1,13 +1,47 @@
 package com.example.assignmentone.Model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DAOperation {
+    private static final String OPERATIONS_KEY = "operations";
 
-    public ArrayList<Operation> operations =new ArrayList<>();
+    private ArrayList<Operation> operations = new ArrayList<>();
+    ArrayList <Operation> temp=new ArrayList<>();
+    public ArrayList<Operation> getEquation(char c){
 
-    public  DAOperation () {
+        for (int i = 0; i <operations.size() ; i++) {
+            if(operations.get(i).getOperation()==c){
+                temp.add(operations.get(i));
+            }
+        }
+        return temp;
+    }
+    public DAOperation(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String operationsJson = sharedPreferences.getString(OPERATIONS_KEY, null);
 
+        if (operationsJson != null) {
+            // If data exists in SharedPreferences, deserialize it and set the operations
+            Type listType = new TypeToken<List<Operation>>() {}.getType();
+            operations = new Gson().fromJson(operationsJson, listType);
+        } else {
+            // If no data exists in SharedPreferences, create the operations data
+            createOperations();
+
+            // Save the operations in SharedPreferences
+            saveOperations(context);
+        }
+    }
+
+
+    private void createOperations() {
         operations.add(new Operation('+', "5 + 7 =", new int[] {14, 12, 13, 10},12));
         operations.add(new Operation('+', "3 + 4 =", new int[] {7, 9, 8, 6},7));
         operations.add(new Operation('+', "6 + 2 =", new int[] {8, 10, 12, 7},8));
@@ -53,5 +87,16 @@ public class DAOperation {
         operations.add(new Operation('/', "8 / 2 =", new int[] {2, 4, 3, 5}, 4));
     }
 
-}
+    private void saveOperations(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String operationsJson = new Gson().toJson(operations);
+        editor.putString(OPERATIONS_KEY, operationsJson);
+        editor.apply();
+    }
 
+    // Getter method for operations list
+    public ArrayList<Operation> getOperations() {
+        return operations;
+    }
+}

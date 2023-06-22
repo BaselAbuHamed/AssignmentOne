@@ -27,6 +27,9 @@
             android:name=".AddActivity"
             android:exported="false" />
         <activity
+            android:name=".Review"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>

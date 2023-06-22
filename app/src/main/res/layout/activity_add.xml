@@ -79,4 +79,28 @@
         android:layout_weight="1"
         app:srcCompat="@drawable/bbbb"
         tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/mark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="48sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/check"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="100dp"
+        android:layout_weight="0"
+        android:text="Check Review"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:cornerRadius="50dp" />
 </LinearLayout>
